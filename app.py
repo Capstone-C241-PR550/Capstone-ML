@@ -4,6 +4,7 @@ from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense, Dropout, BatchNormalization
 from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.callbacks import ReduceLROnPlateau, EarlyStopping
+from flask import Flask, request, jsonify
 
 # Data contoh: penghasilan, pengeluaran, tabungan, dan label kesehatan keuangan
 income = np.array([5000, 6000, 4000, 7000, 8000])
@@ -63,13 +64,44 @@ for train_index, test_index in kfold.split(X):
 # Menampilkan akurasi rata-rata dari k-fold cross-validation
 print("Rata-rata akurasi:", np.mean(accuracies))
 
-# Prediksi kesehatan keuangan
-new_data = np.array([[5500, 3200, 2500]])  # Contoh data baru
-prediction = model.predict(new_data)
-predicted_class = np.argmax(prediction)  # Ambil indeks kelas dengan probabilitas tertinggi
-if predicted_class == 0:
-    print("Kesehatan keuangan: Baik")
-elif predicted_class == 1:
-    print("Kesehatan keuangan: Sedang")
-else:
-    print("Kesehatan keuangan: Kurang")
+# # Prediksi kesehatan keuangan
+# new_data = np.array([[5500, 3200, 2500]])  # Contoh data baru
+# prediction = model.predict(new_data)
+# predicted_class = np.argmax(prediction)  # Ambil indeks kelas dengan probabilitas tertinggi
+# if predicted_class == 0:
+#     print("Kesehatan keuangan: Baik")
+# elif predicted_class == 1:
+#     print("Kesehatan keuangan: Sedang")
+# else:
+#     print("Kesehatan keuangan: Kurang")
+# model.save('model.h5')
+app = Flask(__name__)
+@app.route('/predict', methods=['POST'])
+def predict():
+    # Ambil data pengguna dari JSON
+    data = request.json
+    # Ekstrak fitur dari data pengguna
+    income = data['income']
+    expenses = data['expenses']
+    savings = data['savings']
+    # Bentuk input untuk model
+    new_data = np.array([[income, expenses, savings]])
+    # Lakukan prediksi
+    prediction = model.predict(new_data)
+    predicted_class = np.argmax(prediction)
+    # Konversi hasil prediksi ke dalam teks
+    if predicted_class == 0:
+        result = "Good Financial Health"
+    elif predicted_class == 1:
+        result = "Average Financial Health"
+    else:
+        result = "Poor Financial Health"
+    # Kirimkan hasil prediksi sebagai respons JSON
+      # Ambil akurasi model
+    _, accuracy = model.evaluate(X_test, y_test)
+
+    # Kirimkan hasil prediksi dan akurasi sebagai respons JSON
+    return jsonify({'result': result, 'accuracy': accuracy})
+
+if __name__ == '__main__':
+    app.run(debug=True)

@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prediksi Kesehatan Tabungan</title>
+</head>
+<body>
+    <h1>Prediksi Kesehatan Tabungan</h1>
+    <form action="/predict" method="post">
+        <label for="penghasilan_bulanan">Penghasilan Bulanan:</label>
+        <input type="number" id="penghasilan_bulanan" name="penghasilan_bulanan" step="0.01"><br><br>
+        <label for="pengeluaran_bulanan">Pengeluaran Bulanan:</label>
+        <input type="number" id="pengeluaran_bulanan" name="pengeluaran_bulanan" step="0.01"><br><br>
+        <label for="tabungan_bulanan">Tabungan Bulanan:</label>
+        <input type="number" id="tabungan_bulanan" name="tabungan_bulanan" step="0.01"><br><br>
+        <input type="submit" value="Predict">
+    </form>
+</body>
+</html>

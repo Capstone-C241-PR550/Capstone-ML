@@ -28,7 +28,7 @@ def predict():
             new_input = [penghasilan_bulanan, pengeluaran_bulanan, tabungan_bulanan]
             predicted_label = predict_with_new_input(new_input)
 
-            return jsonify({'predicted_label': predicted_label, 'dd':pengeluaran_bulanan})
+            return jsonify({'predicted_label': predicted_label})
         except (KeyError, TypeError, ValueError) as e:
             return jsonify({'error': str(e)}), 400
     elif request.form:
@@ -42,7 +42,7 @@ def predict():
             new_input = [penghasilan_bulanan, pengeluaran_bulanan, tabungan_bulanan]
             predicted_label = predict_with_new_input(new_input)
 
-            return jsonify({'predicted_label': predicted_label, 'dd':pengeluaran_bulanan})
+            return jsonify({'predicted_label': predicted_label})
         except (KeyError, TypeError, ValueError) as e:
             return jsonify({'error': str(e)}), 400
         

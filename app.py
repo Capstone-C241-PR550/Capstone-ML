@@ -2,8 +2,13 @@ from flask import Flask, jsonify, request
 import numpy as np
 import joblib
 import tensorflow as tf
+import sys
 
 app = Flask(__name__)
+
+# encoding utf-8 
+sys.stdout.reconfigure(encoding='utf-8')
+sys.stderr.reconfigure(encoding='utf-8')
 
 # Load model and scaler
 model_path = 'best_model.h5'
